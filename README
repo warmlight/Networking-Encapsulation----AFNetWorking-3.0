@@ -6,7 +6,7 @@
 将工程中的Http文件移入自己的项目。具体参数解释在Http.h中都有。
 
 ###get
-```objective-c 
+```
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:@"123" , @"id", nil];
     [Http postUrl:@"getMethod.php" parametersDic:dic success:^(NSDictionary *requestDic) {
         NSLog(@"部分URL post %@\n%@", requestDic,requestDic[@"name"]);
@@ -16,7 +16,7 @@
 ```
 
 ###post
-```objective-c
+```
     [Http postUrl:@"http://localhost:82/postMethod.php?id=123" parametersDic:nil success:^(NSDictionary *requestDic) {
         NSLog(@"%@", requestDic[@"name"]);
     } failure:^(NSError *errorInfo) {
@@ -25,7 +25,7 @@
 ```
 
 ###download
-```objective-c
+```
     [Http downLoadUrl:@"http://localhost:82/uploads/7096.wav" parametersDic:nil downLoadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
         NSLog(@"%lld",  bytesRead);
     } success:^(NSURL *filePath, NSURLResponse *response) {
@@ -38,7 +38,7 @@
 ###upload
 
 #####images
-```objective-c
+```
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docDir = [paths objectAtIndex:0];
     NSString *filePath = [docDir stringByAppendingPathComponent:@"80.jpg"];
@@ -57,7 +57,7 @@
     }];
 ```
 ####voice
-```objective-c    
+```    
     [Http postVoiceData:voiceArr uploadUrl:@"uploadMultipleFile.php" name:@"file[]" mimeType:@"audio/x-wav" suffix:@"wav" parametersDic:nil uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
         NSLog(@"%lld",  bytesRead);
     } success:^(NSDictionary *requestObj) {
@@ -67,7 +67,7 @@
     }];
 ```
 ####file(通过文件的data上传 Through the file data)
-```objective-c
+```
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docDir = [paths objectAtIndex:0];
     NSString *filePath = [docDir stringByAppendingPathComponent:@"80.jpg"];
@@ -87,7 +87,7 @@
 ```
 
 ####file(通过文件在本地的路径上传 Through the file loacl path url)
-```objective-c
+```
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docDir = [paths objectAtIndex:0];
     NSString *filePath = [docDir stringByAppendingPathComponent:@"80.jpg"];
