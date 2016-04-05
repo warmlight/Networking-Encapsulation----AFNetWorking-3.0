@@ -83,7 +83,7 @@
     NSString *docDir = [paths objectAtIndex:0];
     NSString *filePath = [docDir stringByAppendingPathComponent:@"80.jpg"];
     NSData *data = [NSData dataWithContentsOfFile:filePath];
-    NSMutableArray *arr = [[NSMutableArray alloc] init];
+    NSMutableArray *arr = [NSMutableArray array];
     [arr addObject:data];
     [arr addObject:data];
     [arr addObject:data];
@@ -94,7 +94,7 @@
     } success:^(NSDictionary *requestObj) {
         NSLog(@"上传图片成功 ：%@", requestObj);
     } failure:^(NSError *errorInfo) {
-        //
+        NSLog(@"fail :%@", errorInfo);
     }];
 }
 
@@ -104,12 +104,12 @@
     NSString *docDir = [paths objectAtIndex:0];
     NSString *filePath = [docDir stringByAppendingPathComponent:@"80.jpg"];
     NSData *data = [NSData dataWithContentsOfFile:filePath];
-    NSMutableArray *arr = [[NSMutableArray alloc] init];
-    [arr addObject:data];
-    [arr addObject:data];
-    [arr addObject:data];
+    NSMutableArray *filesDataArr = [NSMutableArray array];
+    [filesDataArr addObject:data];
+    [filesDataArr addObject:data];
+    [filesDataArr addObject:data];
     
-    [Http postFilesData:arr uploadUrl:@"uploadMultipleFile.php" name:@"file[]" suffix:nil parametersDic:nil uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
+    [Http postFilesData:filesDataArr uploadUrl:@"uploadMultipleFile.php" name:@"file[]" suffix:nil parametersDic:nil uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
         NSLog(@"%lld",  bytesRead/totalBytesRead);
     } success:^(NSDictionary *requestObj) {
         NSLog(@"上传文件成功 ：%@", requestObj);
@@ -125,7 +125,7 @@
     NSString *docDir = [paths objectAtIndex:0];
     NSString *filePath = [docDir stringByAppendingPathComponent:@"7096.wav"];
     NSData *data = [NSData dataWithContentsOfFile:filePath];
-    NSMutableArray *arr = [[NSMutableArray alloc] init];
+    NSMutableArray *arr = [NSMutableArray array];
     [arr addObject:data];
     [arr addObject:data];
     [arr addObject:data];
@@ -144,12 +144,12 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docDir = [paths objectAtIndex:0];
     NSString *filePath = [docDir stringByAppendingPathComponent:@"80.jpg"];
-    NSMutableArray *arr = [[NSMutableArray alloc] init];
-    [arr addObject:filePath];
-    [arr addObject:filePath];
-    [arr addObject:filePath];
+    NSMutableArray *filesPathArr = [NSMutableArray array];
+    [filesPathArr addObject:filePath];
+    [filesPathArr addObject:filePath];
+    [filesPathArr addObject:filePath];
     
-    [Http postWithFilesPaths:arr uploadUrl:@"uploadMultipleFile.php" name:@"file[]" suffix:@"png" parametersDic:nil uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
+    [Http postWithFilesPaths:filesPathArr uploadUrl:@"uploadMultipleFile.php" name:@"file[]" suffix:@"png" parametersDic:nil uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
         NSLog(@"%lld",  bytesRead/totalBytesRead);
     } success:^(NSDictionary *requestObj) {
         NSLog(@"上传文件成功 ：%@", requestObj);
