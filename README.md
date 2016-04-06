@@ -86,7 +86,7 @@
     }];
 ```
 
-####file(通过文件在本地的路径上传 Through the file loacl path url)
+####file(通过文件在本地的路径上传 Through the file loacl path)
 ```objective-c
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docDir = [paths objectAtIndex:0];
