@@ -8,12 +8,16 @@
 
 #import "Http.h"
 #import "AFNetworking.h"
+#import "UrlSessionManager.h"
 
 #ifdef DEBUG
 #define YBLog(s, ... ) NSLog( @"[%@ in line %d] ===============>%@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
 #else
 #define YBLog(s, ... )
 #endif
+
+@interface Http()
+@end
 
 typedef NS_ENUM(NSInteger, RequestType) {
     RequestTypeGet,
@@ -23,6 +27,7 @@ typedef NS_ENUM(NSInteger, RequestType) {
 };
 
 static NSString *BaseUrl = nil;
+
 
 @implementation Http
 
@@ -90,6 +95,8 @@ static NSString *BaseUrl = nil;
 
 + (void)downLoadUrl:(NSString *)url parametersDic:(NSDictionary *)parameters downLoadProgress:(loadProgress)progress success:(void (^)(NSURL *filePath, NSURLResponse *response))success failure:(FailureBlock)failure {
     
+    __weak typeof(self)weakself = self;
+    
     NSString *urlWithoutQuery = [[self alloc] prepareUrlWithoutQueryRequestWithUrlStr:url];
     
     NSString *fullUrl = [[self alloc] generateUrlWithUrlStr:urlWithoutQuery withDic:parameters];
@@ -98,9 +105,7 @@ static NSString *BaseUrl = nil;
     
     NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    
-    NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
+    NSURLSessionDownloadTask *downloadTask = [[UrlSessionManager sharedManager] downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         
         if (progress) {
             progress(downloadProgress.completedUnitCount, downloadProgress.totalUnitCount);
@@ -113,7 +118,7 @@ static NSString *BaseUrl = nil;
         
     } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
         
-        [[self alloc] stopActivityIndicator];
+        [[weakself alloc] stopActivityIndicator];
         
         if (error) {
             if (failure) {
@@ -247,6 +252,8 @@ static NSString *BaseUrl = nil;
 
 - (void)uploadMutipleWithUrl:(NSString *)url fileDatas:(NSMutableArray *)fileDatas filePaths:(NSMutableArray *)filePaths name:(NSString *)name mimeType:(NSString *)type suffix:(NSString *)suffix parametersDic:(NSDictionary *)parametersDic uploadProgress:(loadProgress)progress success:(SuccessBlock)success failure:(FailureBlock)failure {
     
+    __weak typeof(self)weakself = self;
+    
     if (filePaths != nil && fileDatas == nil) {
         
         fileDatas = [NSMutableArray array];
@@ -260,9 +267,8 @@ static NSString *BaseUrl = nil;
     if (fileDatas && fileDatas.count > 0) {
         
         NSString *urlWithoutQuery = [self prepareUrlWithoutQueryRequestWithUrlStr:url];
-        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];        
 
-        NSURLSessionDataTask *tast = [manager POST:urlWithoutQuery parameters:parametersDic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        NSURLSessionDataTask *tast = [[UrlSessionManager sharedManager] POST:urlWithoutQuery parameters:parametersDic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
             
             NSString *mimeType = type;
             if (mimeType == nil || [mimeType stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0) {
@@ -297,7 +303,7 @@ static NSString *BaseUrl = nil;
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
-            [self stopActivityIndicator];
+            [weakself stopActivityIndicator];
             
             if (success) {
                 success(responseObject);
@@ -305,13 +311,12 @@ static NSString *BaseUrl = nil;
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
            
-            [self stopActivityIndicator];
+            [weakself stopActivityIndicator];
             
             if (failure) {
                 failure(error);
                 YBLog(@"上传多个文件错误： %@", error);
             }
-            
         }];
         
         [tast resume];
@@ -321,17 +326,16 @@ static NSString *BaseUrl = nil;
 
 - (void)requestWithUrl:(NSString *)url withDic:(NSDictionary *)parameters requestType:(RequestType)requestType success:(SuccessBlock)success failure:(FailureBlock)failure {
     
+    __block Http* weakself = self;
     NSString *urlWithoutQuery = [self prepareUrlWithoutQueryRequestWithUrlStr:url];
-    
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    
+        
     if (requestType == RequestTypeGet) {
         
-        [manager GET:urlWithoutQuery parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
+        [[UrlSessionManager sharedManager] GET:urlWithoutQuery parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
-            [self stopActivityIndicator];
+            [weakself stopActivityIndicator];
             
             if (success) {
                 
@@ -342,7 +346,7 @@ static NSString *BaseUrl = nil;
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
-            [self stopActivityIndicator];
+            [weakself stopActivityIndicator];
             
             if (failure) {
                 YBLog(@"get请求错误: %@", error.userInfo);
@@ -352,11 +356,11 @@ static NSString *BaseUrl = nil;
         
     } else if (requestType == RequestTypePost) {
         
-        [manager POST:urlWithoutQuery parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
+        [[UrlSessionManager sharedManager] POST:urlWithoutQuery parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
-            [self stopActivityIndicator];
+            [weakself stopActivityIndicator];
 
             if (success) {
                 
@@ -377,9 +381,9 @@ static NSString *BaseUrl = nil;
         
     } else if (requestType == RequestTypePut) {
         
-        [manager PUT:urlWithoutQuery parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [[UrlSessionManager sharedManager] PUT:urlWithoutQuery parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
           
-            [self stopActivityIndicator];
+            [weakself stopActivityIndicator];
 
             if (success) {
                 
@@ -390,7 +394,7 @@ static NSString *BaseUrl = nil;
 
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
-            [self stopActivityIndicator];
+            [weakself stopActivityIndicator];
             
             if (failure) {
                 YBLog(@"put请求错误: %@", error.userInfo);
@@ -399,9 +403,9 @@ static NSString *BaseUrl = nil;
         }];
     } else if (requestType == RequestTypeDelete) {
         
-        [manager DELETE:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [[UrlSessionManager sharedManager] DELETE:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
-            [self stopActivityIndicator];
+            [weakself stopActivityIndicator];
             
             if (success) {
                 
@@ -412,7 +416,7 @@ static NSString *BaseUrl = nil;
 
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
-            [self stopActivityIndicator];
+            [weakself stopActivityIndicator];
             
             if (failure) {
                 YBLog(@"delete请求错误: %@", error.userInfo);
@@ -463,7 +467,7 @@ static NSString *BaseUrl = nil;
     AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager];
     
     [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        NSLog(@"status = %ld", status);
+        NSLog(@"status = %ld", (long)status);
         //监测到网络改变
         switch (status) {
             case AFNetworkReachabilityStatusUnknown:

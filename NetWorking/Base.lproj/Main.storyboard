@@ -16,6 +16,57 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bhe-5L-8oH">
+                                <rect key="frame" x="285" y="20" width="30" height="30"/>
+                                <state key="normal" title="get"/>
+                                <connections>
+                                    <action selector="get:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0kp-94-zcC"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aqp-AZ-XfP">
+                                <rect key="frame" x="285" y="58" width="31" height="30"/>
+                                <state key="normal" title="post"/>
+                                <connections>
+                                    <action selector="post:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Tae-Lh-nC1"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="thX-PH-bdb">
+                                <rect key="frame" x="267" y="96" width="67" height="30"/>
+                                <state key="normal" title="download"/>
+                                <connections>
+                                    <action selector="download:" destination="BYZ-38-t0r" eventType="touchUpInside" id="91D-hO-R2T"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Fw-Gh-b2T">
+                                <rect key="frame" x="264" y="134" width="72" height="30"/>
+                                <state key="normal" title="uploadimg"/>
+                                <connections>
+                                    <action selector="uploadimg:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fgi-SQ-9TJ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E1a-BN-0w3">
+                                <rect key="frame" x="258" y="172" width="85" height="30"/>
+                                <state key="normal" title="uploadVoice"/>
+                                <connections>
+                                    <action selector="uploadvoice:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0EO-ej-0Ss"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S0s-wI-hQl">
+                                <rect key="frame" x="267" y="210" width="68" height="30"/>
+                                <state key="normal" title="uploadfile"/>
+                                <connections>
+                                    <action selector="uploadfie:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dS8-Zz-RjA"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vt9-eE-CSt">
+                                <rect key="frame" x="274" y="248" width="52" height="30"/>
+                                <state key="normal" title="filepath"/>
+                                <connections>
+                                    <action selector="uploadpath:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7Ff-EZ-ueW"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                 </viewController>

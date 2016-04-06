@@ -9,6 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @interface ViewController : UIViewController
+- (IBAction)get:(id)sender;
+- (IBAction)post:(id)sender;
+- (IBAction)download:(id)sender;
+- (IBAction)uploadimg:(id)sender;
+- (IBAction)uploadvoice:(id)sender;
+- (IBAction)uploadfie:(id)sender;
+- (IBAction)uploadpath:(id)sender;
 
 @end
 

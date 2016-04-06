@@ -23,14 +23,14 @@
     
     NSLog(@"baseurl = %@", [Http baseUrl]);
     
-    //各个方法的调用
-    [self get];
-    [self post];
-    [self download];
-    [self uploadImage];
-    [self uploadVoice];
-    [self uploadFile];
-    [self uploadWithPath];
+//    //各个方法的调用
+//    [self get];
+//    [self post];
+//    [self download];
+//    [self uploadImage];
+//    [self uploadVoice];
+//    [self uploadFile];
+//    [self uploadWithPath];
 }
 
 
@@ -81,7 +81,7 @@
 - (void)uploadImage {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docDir = [paths objectAtIndex:0];
-    NSString *filePath = [docDir stringByAppendingPathComponent:@"80.jpg"];
+    NSString *filePath = [docDir stringByAppendingPathComponent:@"80.png"];
     NSData *data = [NSData dataWithContentsOfFile:filePath];
     NSMutableArray *arr = [NSMutableArray array];
     [arr addObject:data];
@@ -102,7 +102,7 @@
 - (void)uploadFile {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docDir = [paths objectAtIndex:0];
-    NSString *filePath = [docDir stringByAppendingPathComponent:@"80.jpg"];
+    NSString *filePath = [docDir stringByAppendingPathComponent:@"80.png"];
     NSData *data = [NSData dataWithContentsOfFile:filePath];
     NSMutableArray *filesDataArr = [NSMutableArray array];
     [filesDataArr addObject:data];
@@ -143,7 +143,7 @@
 - (void)uploadWithPath {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docDir = [paths objectAtIndex:0];
-    NSString *filePath = [docDir stringByAppendingPathComponent:@"80.jpg"];
+    NSString *filePath = [docDir stringByAppendingPathComponent:@"80.png"];
     NSMutableArray *filesPathArr = [NSMutableArray array];
     [filesPathArr addObject:filePath];
     [filesPathArr addObject:filePath];
@@ -164,4 +164,38 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)get:(id)sender {
+    //各个方法的调用
+    [self get];
+}
+
+- (IBAction)post:(id)sender {
+    [self post];
+
+}
+
+- (IBAction)download:(id)sender {
+    [self download];
+
+}
+
+- (IBAction)uploadimg:(id)sender {
+    [self uploadImage];
+
+}
+
+- (IBAction)uploadvoice:(id)sender {
+    [self uploadVoice];
+
+}
+
+- (IBAction)uploadfie:(id)sender {
+    [self uploadFile];
+
+}
+
+- (IBAction)uploadpath:(id)sender {
+    [self uploadWithPath];
+
+}
 @end

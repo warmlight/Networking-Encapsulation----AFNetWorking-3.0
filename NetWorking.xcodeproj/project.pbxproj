@@ -35,6 +35,7 @@
 		CD0173E01CA901B40037106B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD0173DF1CA901B40037106B /* Security.framework */; };
 		CD0173E21CA901BD0037106B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD0173E11CA901BD0037106B /* MobileCoreServices.framework */; };
 		CD0173E51CA901F90037106B /* Http.m in Sources */ = {isa = PBXBuildFile; fileRef = CD0173E41CA901F90037106B /* Http.m */; };
+		CD05DFF41CB4F39F007A49B6 /* UrlSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD05DFF31CB4F39F007A49B6 /* UrlSessionManager.m */; };
 		CDAED8441CABCA990058F41A /* 58.png in Resources */ = {isa = PBXBuildFile; fileRef = CDAED8431CABCA990058F41A /* 58.png */; };
 /* End PBXBuildFile section */
 
@@ -111,6 +112,8 @@
 		CD0173E11CA901BD0037106B /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		CD0173E31CA901F90037106B /* Http.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Http.h; sourceTree = "<group>"; };
 		CD0173E41CA901F90037106B /* Http.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Http.m; sourceTree = "<group>"; };
+		CD05DFF21CB4F39F007A49B6 /* UrlSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlSessionManager.h; sourceTree = "<group>"; };
+		CD05DFF31CB4F39F007A49B6 /* UrlSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlSessionManager.m; sourceTree = "<group>"; };
 		CDAED8431CABCA990058F41A /* 58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 58.png; path = "../AFNetworking/UIKit+AFNetworking/58.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -184,6 +187,8 @@
 				CD0173761CA901190037106B /* Supporting Files */,
 				CD0173E31CA901F90037106B /* Http.h */,
 				CD0173E41CA901F90037106B /* Http.m */,
+				CD05DFF21CB4F39F007A49B6 /* UrlSessionManager.h */,
+				CD05DFF31CB4F39F007A49B6 /* UrlSessionManager.m */,
 			);
 			path = NetWorking;
 			sourceTree = "<group>";
@@ -402,6 +407,7 @@
 				CD0173D61CA901740037106B /* UIButton+AFNetworking.m in Sources */,
 				CD01737B1CA901190037106B /* AppDelegate.m in Sources */,
 				CD0173B81CA901440037106B /* AFNetworkReachabilityManager.m in Sources */,
+				CD05DFF41CB4F39F007A49B6 /* UrlSessionManager.m in Sources */,
 				CD0173D91CA901740037106B /* UIRefreshControl+AFNetworking.m in Sources */,
 				CD0173E51CA901F90037106B /* Http.m in Sources */,
 				CD0173781CA901190037106B /* main.m in Sources */,
