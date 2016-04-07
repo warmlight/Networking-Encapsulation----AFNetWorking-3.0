@@ -95,7 +95,7 @@ static NSString *BaseUrl = nil;
 
 + (void)downLoadUrl:(NSString *)url parametersDic:(NSDictionary *)parameters downLoadProgress:(loadProgress)progress success:(void (^)(NSURL *filePath, NSURLResponse *response))success failure:(FailureBlock)failure {
     
-    __weak typeof(self)weakself = self;
+    __block typeof(self)weakself = self;
     
     NSString *urlWithoutQuery = [[self alloc] prepareUrlWithoutQueryRequestWithUrlStr:url];
     
@@ -252,7 +252,7 @@ static NSString *BaseUrl = nil;
 
 - (void)uploadMutipleWithUrl:(NSString *)url fileDatas:(NSMutableArray *)fileDatas filePaths:(NSMutableArray *)filePaths name:(NSString *)name mimeType:(NSString *)type suffix:(NSString *)suffix parametersDic:(NSDictionary *)parametersDic uploadProgress:(loadProgress)progress success:(SuccessBlock)success failure:(FailureBlock)failure {
     
-    __weak typeof(self)weakself = self;
+    __block typeof(self)weakself = self;
     
     if (filePaths != nil && fileDatas == nil) {
         
@@ -326,7 +326,8 @@ static NSString *BaseUrl = nil;
 
 - (void)requestWithUrl:(NSString *)url withDic:(NSDictionary *)parameters requestType:(RequestType)requestType success:(SuccessBlock)success failure:(FailureBlock)failure {
     
-    __block Http* weakself = self;
+    __block typeof(self)weakself = self;
+    
     NSString *urlWithoutQuery = [self prepareUrlWithoutQueryRequestWithUrlStr:url];
         
     if (requestType == RequestTypeGet) {
