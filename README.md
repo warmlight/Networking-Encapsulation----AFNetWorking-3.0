@@ -3,7 +3,7 @@
 　　对AFNetWorking 3.0进行了封装，提供了一些常用方法，简化了使用。
 
 ##使用 How to use
-将工程中的Http文件移入自己的项目。具体参数解释在Http.h中都有。
+　　将工程中的Http文件移入自己的项目。具体参数解释在Http.h中都有。
 
 ###get
 ```objective-c
@@ -36,7 +36,6 @@
 ```
 
 ###upload
-
 #####images
 ```objective-c
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
