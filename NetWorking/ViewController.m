@@ -35,18 +35,18 @@
 
 
 - (void)get {
-    [Http getUrl:@"http://localhost:82/getMethod.php?id=123" parametersDic: nil success:^(NSDictionary *requestDic) {
+    [Http getUrl:@"   http:  //localhost:82/getMethod.php?id=123  " parametersDic: nil success:^(NSDictionary *requestDic) {
         NSLog(@"完整get %@\n%@", requestDic,requestDic[@"name"]);
     } failure:^(NSError *errorInfo) {
 
     }];
     
-    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:@"123" , @"id", nil];
-    [Http getUrl:@"getMethod.php" parametersDic:dic success:^(NSDictionary *requestDic) {
-        NSLog(@"部分URL get %@\n%@", requestDic,requestDic[@"name"]);
-    } failure:^(NSError *errorInfo) {
-        
-    }];
+//    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:@"123" , @"id", nil];
+//    [Http getUrl:@"getMethod.php" parametersDic:dic success:^(NSDictionary *requestDic) {
+//        NSLog(@"部分URL get %@\n%@", requestDic,requestDic[@"name"]);
+//    } failure:^(NSError *errorInfo) {
+//        
+//    }];
 }
 
 
@@ -110,7 +110,7 @@
     [filesDataArr addObject:data];
     
     [Http postFilesData:filesDataArr uploadUrl:@"uploadMultipleFile.php" name:@"file[]" suffix:nil parametersDic:nil uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
-        NSLog(@"%lld",  bytesRead/totalBytesRead);
+        NSLog(@"%lld",  bytesRead);
     } success:^(NSDictionary *requestObj) {
         NSLog(@"上传文件成功 ：%@", requestObj);
     } failure:^(NSError *errorInfo) {
@@ -150,7 +150,7 @@
     [filesPathArr addObject:filePath];
     
     [Http postWithFilesPaths:filesPathArr uploadUrl:@"uploadMultipleFile.php" name:@"file[]" suffix:@"png" parametersDic:nil uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
-        NSLog(@"%lld",  bytesRead/totalBytesRead);
+        NSLog(@"%lld",  bytesRead);
     } success:^(NSDictionary *requestObj) {
         NSLog(@"上传文件成功 ：%@", requestObj);
     } failure:^(NSError *errorInfo) {

@@ -10,10 +10,10 @@
 #import "AFNetworking.h"
 #import "UrlSessionManager.h"
 
-#ifdef DEBUG
-#define YBLog(s, ... ) NSLog( @"[%@ in line %d] ===============>%@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
+#ifdef __OPTIMIZE__
+# define DLogInfo(...) {}
 #else
-#define YBLog(s, ... )
+# define DLogInfo(fmt, ...)  NSLog((@"\n---------------------------------------------------\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" fmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__);
 #endif
 
 @interface Http()
@@ -95,8 +95,6 @@ static NSString *BaseUrl = nil;
 
 + (void)downLoadUrl:(NSString *)url parametersDic:(NSDictionary *)parameters downLoadProgress:(loadProgress)progress success:(void (^)(NSURL *filePath, NSURLResponse *response))success failure:(FailureBlock)failure {
     
-    __block typeof(self)weakself = self;
-    
     NSString *urlWithoutQuery = [[self alloc] prepareUrlWithoutQueryRequestWithUrlStr:url];
     
     NSString *fullUrl = [[self alloc] generateUrlWithUrlStr:urlWithoutQuery withDic:parameters];
@@ -118,11 +116,11 @@ static NSString *BaseUrl = nil;
         
     } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
         
-        [[weakself alloc] stopActivityIndicator];
+        [[self alloc] stopActivityIndicator];
         
         if (error) {
             if (failure) {
-                YBLog(@"下载错误: %@", error.userInfo);
+                DLogInfo(@"下载错误: %@", error.userInfo);
                 failure(error);
             }
         } else {
@@ -246,13 +244,10 @@ static NSString *BaseUrl = nil;
         }
         
     }];
-
 }
 
 
 - (void)uploadMutipleWithUrl:(NSString *)url fileDatas:(NSMutableArray *)fileDatas filePaths:(NSMutableArray *)filePaths name:(NSString *)name mimeType:(NSString *)type suffix:(NSString *)suffix parametersDic:(NSDictionary *)parametersDic uploadProgress:(loadProgress)progress success:(SuccessBlock)success failure:(FailureBlock)failure {
-    
-    __block typeof(self)weakself = self;
     
     if (filePaths != nil && fileDatas == nil) {
         
@@ -261,7 +256,6 @@ static NSString *BaseUrl = nil;
             NSData *data = [NSData dataWithContentsOfFile:filePaths[i]];
             [fileDatas addObject:data];
         }
-        
     }
     
     if (fileDatas && fileDatas.count > 0) {
@@ -303,7 +297,7 @@ static NSString *BaseUrl = nil;
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
-            [weakself stopActivityIndicator];
+            [self stopActivityIndicator];
             
             if (success) {
                 success(responseObject);
@@ -311,11 +305,11 @@ static NSString *BaseUrl = nil;
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
            
-            [weakself stopActivityIndicator];
+            [self stopActivityIndicator];
             
             if (failure) {
                 failure(error);
-                YBLog(@"上传多个文件错误： %@", error);
+                DLogInfo(@"上传多个文件错误： %@", error);
             }
         }];
         
@@ -326,7 +320,12 @@ static NSString *BaseUrl = nil;
 
 - (void)requestWithUrl:(NSString *)url withDic:(NSDictionary *)parameters requestType:(RequestType)requestType success:(SuccessBlock)success failure:(FailureBlock)failure {
     
-    __block typeof(self)weakself = self;
+    if (!url) {
+        
+        DLogInfo(@"url为空");
+        return;
+    }
+    
     
     NSString *urlWithoutQuery = [self prepareUrlWithoutQueryRequestWithUrlStr:url];
         
@@ -336,7 +335,7 @@ static NSString *BaseUrl = nil;
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
-            [weakself stopActivityIndicator];
+            [self stopActivityIndicator];
             
             if (success) {
                 
@@ -347,10 +346,10 @@ static NSString *BaseUrl = nil;
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
-            [weakself stopActivityIndicator];
+            [self stopActivityIndicator];
             
             if (failure) {
-                YBLog(@"get请求错误: %@", error.userInfo);
+                DLogInfo(@"get请求错误: %@", error.userInfo);
                 failure(error);
             }
         }];
@@ -361,7 +360,7 @@ static NSString *BaseUrl = nil;
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
-            [weakself stopActivityIndicator];
+            [self stopActivityIndicator];
 
             if (success) {
                 
@@ -375,7 +374,7 @@ static NSString *BaseUrl = nil;
             [self stopActivityIndicator];
             
             if (failure) {
-                YBLog(@"post请求错误: %@", error.userInfo);
+                DLogInfo(@"post请求错误: %@", error.userInfo);
                 failure(error);
             }
         }];
@@ -384,7 +383,7 @@ static NSString *BaseUrl = nil;
         
         [[UrlSessionManager sharedManager] PUT:urlWithoutQuery parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
           
-            [weakself stopActivityIndicator];
+            [self stopActivityIndicator];
 
             if (success) {
                 
@@ -395,18 +394,19 @@ static NSString *BaseUrl = nil;
 
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
-            [weakself stopActivityIndicator];
+            [self stopActivityIndicator];
             
             if (failure) {
-                YBLog(@"put请求错误: %@", error.userInfo);
+                DLogInfo(@"put请求错误: %@", error.userInfo);
                 failure(error);
             }
         }];
+        
     } else if (requestType == RequestTypeDelete) {
         
         [[UrlSessionManager sharedManager] DELETE:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
-            [weakself stopActivityIndicator];
+            [self stopActivityIndicator];
             
             if (success) {
                 
@@ -417,10 +417,10 @@ static NSString *BaseUrl = nil;
 
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
-            [weakself stopActivityIndicator];
+            [self stopActivityIndicator];
             
             if (failure) {
-                YBLog(@"delete请求错误: %@", error.userInfo);
+                DLogInfo(@"delete请求错误: %@", error.userInfo);
                 failure(error);
             }
 
@@ -437,9 +437,12 @@ static NSString *BaseUrl = nil;
             [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
         }
     }];
+    //过滤空格
+    urlStr = [urlStr stringByReplacingOccurrencesOfString:@" " withString:@""];
     //如果不是完整链接就拼接上baseurl
     NSString *urlWithoutQuery = [self urlWithoutQuery:urlStr];
-    return [urlWithoutQuery stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    //有中文转编码
+    return [self transformChinese:urlWithoutQuery];
 }
 
 
@@ -454,7 +457,9 @@ static NSString *BaseUrl = nil;
     }
 }
 
+
 - (void)stopActivityIndicator {
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         NSLog(@"stop animating");
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -472,18 +477,18 @@ static NSString *BaseUrl = nil;
         //监测到网络改变
         switch (status) {
             case AFNetworkReachabilityStatusUnknown:
-                YBLog(@"未知网络状态");
+                DLogInfo(@"未知网络状态");
                 break;
             case AFNetworkReachabilityStatusNotReachable:
-                YBLog(@"无网络");
+                DLogInfo(@"无网络");
                 break;
                 
             case AFNetworkReachabilityStatusReachableViaWWAN:
-                YBLog(@"蜂窝数据网");
+                DLogInfo(@"蜂窝数据网");
                 break;
                 
             case AFNetworkReachabilityStatusReachableViaWiFi:
-                YBLog(@"WiFi网络");
+                DLogInfo(@"WiFi网络");
                 break;
                 
             default:
@@ -514,16 +519,28 @@ static NSString *BaseUrl = nil;
         //value
         NSString *finalValue = [obj stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         
-        NSString *parameter =[NSString stringWithFormat:@"%@=%@",finalKey,finalValue];
+        NSString *parameter =[NSString stringWithFormat:@"%@=%@", finalKey, finalValue];
         
         [parameters addObject:parameter];
     }];
     
     NSString *queryString = [parameters componentsJoinedByString:@"&"];
-    queryString = queryString ? [NSString stringWithFormat:@"?%@",queryString] : @"";
-    NSString *baseUrl = [NSString stringWithFormat:@"%@%@",urlStr,queryString];
-    //处理url包含中文的问题
-    return [baseUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    queryString = queryString ? [NSString stringWithFormat:@"?%@", queryString] : @"";
+    NSString *baseUrl = [NSString stringWithFormat:@"%@%@", urlStr, queryString];
+    
+    return [self transformChinese:baseUrl];
+}
+
+
+//处理url包含中文的问题
+- (NSString *)transformChinese:(NSString *)urlString {
+    
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"[\\u4e00-\\u9fa5]" options:NSRegularExpressionCaseInsensitive error:nil];
+    if ([regex numberOfMatchesInString:urlString options:0 range:NSMakeRange(0, [urlString length])] > 0) {
+        urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    }
+    
+    return urlString;
 }
 
 @end
