@@ -66,9 +66,21 @@ typedef void (^loadProgress)(int64_t bytesRead, int64_t totalBytesRead);
  */
 - (void)networkType:(void (^)(AFNetworkReachabilityStatus type))networkType;
 
+/*!
+ *  上传方法的具体实现
+ *
+ */
 - (void)uploadMutipleWithUrl:(NSString *)url fileDatas:(NSMutableArray *)fileDatas filePaths:(NSMutableArray *)filePaths name:(NSString *)name mimeType:(NSString *)type suffix:(NSString *)suffix parametersDic:(NSDictionary *)parametersDic sessionManager:(UrlSessionManager *)sessionManager uploadProgress:(loadProgress)progress success:(SuccessBlock)success failure:(FailureBlock)failure;
 
+/*!
+ *  get/post/put/delete方法的具体实现
+ *
+ */
 - (void)requestWithUrl:(NSString *)url withDic:(NSDictionary *)parameters requestType:(RequestType)requestType sessionManager:(UrlSessionManager *)sessionManager success:(SuccessBlock)success failure:(FailureBlock)failure;
 
+/*!
+ *  下载方法的具体实现
+ *
+ */
 - (void)downLoadUrl:(NSString *)url parametersDic:(NSDictionary *)parameters sessionManager:(UrlSessionManager *)sessionManager downLoadProgress:(loadProgress)progress success:(void (^)(NSURL *filePath, NSURLResponse *response))success failure:(FailureBlock)failure;
 @end
