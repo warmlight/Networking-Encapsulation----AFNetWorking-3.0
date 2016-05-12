@@ -37,7 +37,6 @@
 		CD0173E51CA901F90037106B /* Http.m in Sources */ = {isa = PBXBuildFile; fileRef = CD0173E41CA901F90037106B /* Http.m */; };
 		CD05DFF41CB4F39F007A49B6 /* UrlSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD05DFF31CB4F39F007A49B6 /* UrlSessionManager.m */; };
 		CD8C16181CE469CB009E5AD8 /* HttpExecute.m in Sources */ = {isa = PBXBuildFile; fileRef = CD8C16171CE469CB009E5AD8 /* HttpExecute.m */; };
-		CDAED8441CABCA990058F41A /* 58.png in Resources */ = {isa = PBXBuildFile; fileRef = CDAED8431CABCA990058F41A /* 58.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,7 +116,6 @@
 		CD05DFF31CB4F39F007A49B6 /* UrlSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UrlSessionManager.m; path = ../UrlSessionManager.m; sourceTree = "<group>"; };
 		CD8C16161CE469CB009E5AD8 /* HttpExecute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpExecute.h; sourceTree = "<group>"; };
 		CD8C16171CE469CB009E5AD8 /* HttpExecute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpExecute.m; sourceTree = "<group>"; };
-		CDAED8431CABCA990058F41A /* 58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 58.png; path = "../AFNetworking/UIKit+AFNetworking/58.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,7 +176,6 @@
 		CD0173751CA901190037106B /* NetWorking */ = {
 			isa = PBXGroup;
 			children = (
-				CDAED8431CABCA990058F41A /* 58.png */,
 				CD0173791CA901190037106B /* AppDelegate.h */,
 				CD01737A1CA901190037106B /* AppDelegate.m */,
 				CD01737C1CA901190037106B /* ViewController.h */,
@@ -386,7 +383,6 @@
 			files = (
 				CD0173861CA901190037106B /* LaunchScreen.storyboard in Resources */,
 				CD0173831CA901190037106B /* Assets.xcassets in Resources */,
-				CDAED8441CABCA990058F41A /* 58.png in Resources */,
 				CD0173811CA901190037106B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

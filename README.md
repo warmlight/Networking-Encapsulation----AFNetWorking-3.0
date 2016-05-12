@@ -1,6 +1,7 @@
 #封装AFNetWorking 3.0
 
-　　对AFNetWorking 3.0进行了封装，提供了一些常用方法，简化了使用。
+　　对AFNetWorking 3.0进行了封装，提供了一些常用方法，简化了使用。  
+　　下载地址：[git](https://github.com/warmlight/Networking-Encapsulation----AFNetWorking-3.0)
 
 ##使用 How to use
 　　将工程中的HttpUtils文件夹移入自己的项目。具体参数解释在注释中都有。
@@ -8,8 +9,8 @@
 ###get
 ```objective-c
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:@"123" , @"id", nil];
-    [Http postUrl:@"getMethod.php" parametersDic:dic success:^(NSDictionary *requestDic) {
-        NSLog(@"部分URL post %@\n%@", requestDic,requestDic[@"name"]);
+    [Http getUrl:@"getMethod.php" parametersDic:dic success:^(NSDictionary *requestDic) {
+        NSLog(@"部分URL get %@\n%@", requestDic,requestDic[@"name"]);
     } failure:^(NSError *errorInfo) {
         
     }];
