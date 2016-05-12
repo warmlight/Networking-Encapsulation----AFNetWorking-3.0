@@ -47,8 +47,8 @@
     
     UrlSessionManager *manager = [UrlSessionManager sharedManager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager.requestSerializer setValue:@"Bearer ba25faca69a8fed526a714f135459ae5" forHTTPHeaderField:@"Authorization"];
-    [Http getUrl:@"http://mobile.yiban.cn/api/v3/home" parametersDic:nil sessionManager:manager success:^(NSDictionary *requestDic) {
+    [manager.requestSerializer setValue:@"value" forHTTPHeaderField:@"HeaderField"];
+    [Http getUrl:@"http://yourUrl" parametersDic:nil sessionManager:manager success:^(NSDictionary *requestDic) {
       
         NSLog(@"完整get %@", requestDic);
         
