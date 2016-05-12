@@ -19,9 +19,12 @@
     [super viewDidLoad];
     
     //设置baseUrl
-    [Http updateBaseUrl:BaseUrl];
+    [Http alloc].baseUrl = BaseUrl;
     
-    NSLog(@"baseurl = %@", [Http baseUrl]);
+    //网络连接状态
+    [Http networkType:^(AFNetworkReachabilityStatus type) {
+        NSLog(@"type ==================== %ld", (long)type);
+    }];
 }
 
 
@@ -32,7 +35,7 @@
     } failure:^(NSError *errorInfo) {
 
     }];
-    
+
     
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:@"123" , @"id", nil];
     [Http getUrl:@"getMethod.php" parametersDic:dic success:^(NSDictionary *requestDic) {
@@ -40,13 +43,15 @@
     } failure:^(NSError *errorInfo) {
         
     }];
-    
+
     
     UrlSessionManager *manager = [UrlSessionManager sharedManager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager.requestSerializer setValue:@"value" forHTTPHeaderField:@"headerField"];
-    [Http getUrl:@"http://yourUrl" parametersDic:nil sessionManager:manager success:^(NSDictionary *requestDic) {
-        NSLog(@"%@", requestDic);
+    [manager.requestSerializer setValue:@"Bearer ba25faca69a8fed526a714f135459ae5" forHTTPHeaderField:@"Authorization"];
+    [Http getUrl:@"http://mobile.yiban.cn/api/v3/home" parametersDic:nil sessionManager:manager success:^(NSDictionary *requestDic) {
+      
+        NSLog(@"完整get %@", requestDic);
+        
     } failure:^(NSError *errorInfo) {
         
     }];
@@ -119,7 +124,6 @@
     } failure:^(NSError *errorInfo) {
         //
     }];
-    
 }
 
 

@@ -8,42 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "UrlSessionManager.h"
+#import "HttpExecute.h"
 
-/*!
- *  成功的回调
- *
- *  @param requestObj 接口返回的数据字典
- */
-typedef void (^SuccessBlock)(NSDictionary * requestDic);
-
-/*!
- *  失败的回调
- *
- *  @param errorInfo 失败的错误信息
- */
-typedef void (^FailureBlock)(NSError *errorInfo);
-
-/*!
- *  进度的回调
- *
- *  @param bytesRead      已经上传/下载的数据大小
- *  @param totalBytesRead 总共的数据大小
- */
-typedef void (^loadProgress)(int64_t bytesRead, int64_t totalBytesRead);
-
-
-@interface Http : UIViewController
-/*!
- *  得到当前的BaseUrl
- *
- */
-+ (NSString *)baseUrl;
+@interface Http : NSObject
 
 /*!
  *  设置BaseUrl，只用设置一次可全局使用，当需要改动时再调用进行设置
- *
  */
-+ (void)updateBaseUrl:(NSString *)baseUrl;
+@property(strong, nonatomic) NSString *baseUrl;
 
 /*!
  *  get请求
@@ -152,13 +124,6 @@ typedef void (^loadProgress)(int64_t bytesRead, int64_t totalBytesRead);
  *  @param failure       上传请求失败的回调
  */
 + (void)postWithFilesPaths:(NSMutableArray *)filePaths uploadUrl:(NSString *)url name:(NSString *)name suffix:(NSString *)suffix parametersDic:(NSDictionary *)parameters uploadProgress:(loadProgress)progress success:(SuccessBlock)success failure:(FailureBlock)failure;
-
-/*!
- *  获取当前网络连接类型 网络变化时会回调该函数
- *
- *  @param networkType 连接类型，-1：未知， 0：无网络，1：蜂窝网，2：wifi
- */
-- (void)networkType:(void (^)(NSInteger type))networkType;
 
 #pragma mark - 可定制sessionManager
 /*!
@@ -276,4 +241,11 @@ typedef void (^loadProgress)(int64_t bytesRead, int64_t totalBytesRead);
  *  @param failure        上传请求失败的回调
  */
 + (void)postWithFilesPaths:(NSMutableArray *)filePaths uploadUrl:(NSString *)url name:(NSString *)name suffix:(NSString *)suffix parametersDic:(NSDictionary *)parameters sessionManager:(UrlSessionManager *)sessionManager uploadProgress:(loadProgress)progress success:(SuccessBlock)success failure:(FailureBlock)failure;
+
+/*!
+ *  获取当前网络连接类型 网络变化时会回调该函数
+ *
+ *  @param networkType 连接类型，-1：未知， 0：无网络，1：蜂窝网，2：wifi
+ */
++ (void)networkType:(void (^)(AFNetworkReachabilityStatus type))networkType;
 @end

@@ -36,6 +36,7 @@
 		CD0173E21CA901BD0037106B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD0173E11CA901BD0037106B /* MobileCoreServices.framework */; };
 		CD0173E51CA901F90037106B /* Http.m in Sources */ = {isa = PBXBuildFile; fileRef = CD0173E41CA901F90037106B /* Http.m */; };
 		CD05DFF41CB4F39F007A49B6 /* UrlSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD05DFF31CB4F39F007A49B6 /* UrlSessionManager.m */; };
+		CD8C16181CE469CB009E5AD8 /* HttpExecute.m in Sources */ = {isa = PBXBuildFile; fileRef = CD8C16171CE469CB009E5AD8 /* HttpExecute.m */; };
 		CDAED8441CABCA990058F41A /* 58.png in Resources */ = {isa = PBXBuildFile; fileRef = CDAED8431CABCA990058F41A /* 58.png */; };
 /* End PBXBuildFile section */
 
@@ -114,6 +115,8 @@
 		CD0173E41CA901F90037106B /* Http.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Http.m; path = ../Http.m; sourceTree = "<group>"; };
 		CD05DFF21CB4F39F007A49B6 /* UrlSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UrlSessionManager.h; path = ../UrlSessionManager.h; sourceTree = "<group>"; };
 		CD05DFF31CB4F39F007A49B6 /* UrlSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UrlSessionManager.m; path = ../UrlSessionManager.m; sourceTree = "<group>"; };
+		CD8C16161CE469CB009E5AD8 /* HttpExecute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpExecute.h; sourceTree = "<group>"; };
+		CD8C16171CE469CB009E5AD8 /* HttpExecute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpExecute.m; sourceTree = "<group>"; };
 		CDAED8431CABCA990058F41A /* 58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 58.png; path = "../AFNetworking/UIKit+AFNetworking/58.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -271,6 +274,8 @@
 				CD0173E41CA901F90037106B /* Http.m */,
 				CD05DFF21CB4F39F007A49B6 /* UrlSessionManager.h */,
 				CD05DFF31CB4F39F007A49B6 /* UrlSessionManager.m */,
+				CD8C16161CE469CB009E5AD8 /* HttpExecute.h */,
+				CD8C16171CE469CB009E5AD8 /* HttpExecute.m */,
 			);
 			path = HttpUtils;
 			sourceTree = "<group>";
@@ -422,6 +427,7 @@
 				CD0173D21CA901740037106B /* AFAutoPurgingImageCache.m in Sources */,
 				CD0173B91CA901440037106B /* AFSecurityPolicy.m in Sources */,
 				CD0173BA1CA901440037106B /* AFURLRequestSerialization.m in Sources */,
+				CD8C16181CE469CB009E5AD8 /* HttpExecute.m in Sources */,
 				CD0173D41CA901740037106B /* AFNetworkActivityIndicatorManager.m in Sources */,
 				CD0173BB1CA901440037106B /* AFURLResponseSerialization.m in Sources */,
 				CD0173B71CA901440037106B /* AFHTTPSessionManager.m in Sources */,
