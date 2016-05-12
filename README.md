@@ -3,7 +3,7 @@
 　　对AFNetWorking 3.0进行了封装，提供了一些常用方法，简化了使用。
 
 ##使用 How to use
-　　将工程中的Http文件移入自己的项目。具体参数解释在Http.h中都有。
+　　将工程中的HttpUtils文件夹移入自己的项目。具体参数解释在注释中都有。
 
 ###get
 ```objective-c
@@ -101,5 +101,20 @@
         NSLog(@"upload files success ：%@", requestObj);
     } failure:^(NSError *errorInfo) {
         NSLog(@"failure :%@", errorInfo);    
+    }];
+```
+
+##定制sessionManager
+　　通过定制sessionManager能够自定义请求头，设置请求格式以及返回格式等等。  
+　　以上所有方法都提供了接受自定义的sessionManager的请求方法。
+
+```objective-c
+    UrlSessionManager *manager = [UrlSessionManager sharedManager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"value" forHTTPHeaderField:@"headerField"];
+    [Http getUrl:@"http://yourUrl" parametersDic:nil sessionManager:manager success:^(NSDictionary *requestDic) {
+        NSLog(@"%@", requestDic);        
+    } failure:^(NSError *errorInfo) {
+        
     }];
 ```

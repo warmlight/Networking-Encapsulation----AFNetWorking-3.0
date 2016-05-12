@@ -22,31 +22,34 @@
     [Http updateBaseUrl:BaseUrl];
     
     NSLog(@"baseurl = %@", [Http baseUrl]);
-    
-//    //各个方法的调用
-//    [self get];
-//    [self post];
-//    [self download];
-//    [self uploadImage];
-//    [self uploadVoice];
-//    [self uploadFile];
-//    [self uploadWithPath];
 }
 
 
 - (void)get {
-    [Http getUrl:@"   http:  //localhost:82/getMethod.php?id=123  " parametersDic: nil success:^(NSDictionary *requestDic) {
+    
+    [Http getUrl:@"   http:  //localhost:82/getMethod.php?id=123  " parametersDic:nil success:^(NSDictionary *requestDic) {
         NSLog(@"完整get %@\n%@", requestDic,requestDic[@"name"]);
     } failure:^(NSError *errorInfo) {
 
     }];
     
-//    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:@"123" , @"id", nil];
-//    [Http getUrl:@"getMethod.php" parametersDic:dic success:^(NSDictionary *requestDic) {
-//        NSLog(@"部分URL get %@\n%@", requestDic,requestDic[@"name"]);
-//    } failure:^(NSError *errorInfo) {
-//        
-//    }];
+    
+    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:@"123" , @"id", nil];
+    [Http getUrl:@"getMethod.php" parametersDic:dic success:^(NSDictionary *requestDic) {
+        NSLog(@"部分URL get %@\n%@", requestDic,requestDic[@"name"]);
+    } failure:^(NSError *errorInfo) {
+        
+    }];
+    
+    
+    UrlSessionManager *manager = [UrlSessionManager sharedManager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"value" forHTTPHeaderField:@"headerField"];
+    [Http getUrl:@"http://yourUrl" parametersDic:nil sessionManager:manager success:^(NSDictionary *requestDic) {
+        NSLog(@"%@", requestDic);
+    } failure:^(NSError *errorInfo) {
+        
+    }];
 }
 
 

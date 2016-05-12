@@ -8,7 +8,6 @@
 
 #import "Http.h"
 #import "AFNetworking.h"
-#import "UrlSessionManager.h"
 
 #ifdef __OPTIMIZE__
 # define DLogInfo(...) {}
@@ -43,7 +42,19 @@ static NSString *BaseUrl = nil;
 
 + (void)getUrl:(NSString *)url parametersDic:(NSDictionary *)parameters success:(SuccessBlock)success failure:(FailureBlock)failure {
     
-    [[self alloc] requestWithUrl:url withDic:parameters requestType:RequestTypeGet
+    [[self alloc] requestWithUrl:url withDic:parameters requestType:RequestTypeGet sessionManager:nil
+                         success:^(NSDictionary *requestDic) {
+                             success(requestDic);
+                             
+                         } failure:^(NSError *errorInfo) {
+                             failure(errorInfo);
+                         }];
+}
+
+
++ (void)getUrl:(NSString *)url parametersDic:(NSDictionary *)parameters sessionManager:(UrlSessionManager *)sessionManager success:(SuccessBlock)success failure:(FailureBlock)failure {
+    
+    [[self alloc] requestWithUrl:url withDic:parameters requestType:RequestTypeGet sessionManager:sessionManager
      
                          success:^(NSDictionary *requestDic) {
                              success(requestDic);
@@ -56,7 +67,19 @@ static NSString *BaseUrl = nil;
 
 + (void)postUrl:(NSString *)url parametersDic:(NSDictionary *)parameters success:(SuccessBlock)success failure:(FailureBlock)failure {
     
-    [[self alloc] requestWithUrl:url withDic:parameters requestType:RequestTypePost
+    [[self alloc] requestWithUrl:url withDic:parameters requestType:RequestTypePost sessionManager:nil
+                         success:^(NSDictionary *requestDic) {
+                             success(requestDic);
+                             
+                         } failure:^(NSError *errorInfo) {
+                             failure(errorInfo);
+                         }];
+}
+
+
++ (void)postUrl:(NSString *)url parametersDic:(NSDictionary *)parameters sessionManager:(UrlSessionManager *)sessionManager success:(SuccessBlock)success failure:(FailureBlock)failure {
+    
+    [[self alloc] requestWithUrl:url withDic:parameters requestType:RequestTypePost sessionManager:sessionManager
      
                          success:^(NSDictionary *requestDic) {
                              success(requestDic);
@@ -69,7 +92,20 @@ static NSString *BaseUrl = nil;
 
 + (void)putUrl:(NSString *)url parametersDic:(NSDictionary *)parameters success:(SuccessBlock)success failure:(FailureBlock)failure {
     
-    [[self alloc] requestWithUrl:url withDic:parameters requestType:RequestTypePut
+    [[self alloc] requestWithUrl:url withDic:parameters requestType:RequestTypePut sessionManager:nil
+     
+                         success:^(NSDictionary *requestDic) {
+                             success(requestDic);
+                             
+                         } failure:^(NSError *errorInfo) {
+                             failure(errorInfo);
+                         }];
+}
+
+
++ (void)putUrl:(NSString *)url parametersDic:(NSDictionary *)parameters sessionManager:(UrlSessionManager *)sessionManager success:(SuccessBlock)success failure:(FailureBlock)failure {
+    
+    [[self alloc] requestWithUrl:url withDic:parameters requestType:RequestTypePut sessionManager:sessionManager
      
                          success:^(NSDictionary *requestDic) {
                              success(requestDic);
@@ -82,7 +118,20 @@ static NSString *BaseUrl = nil;
 
 + (void)deleteUrl:(NSString *)url parametersDic:(NSDictionary *)parameters success:(SuccessBlock)success failure:(FailureBlock)failure {
     
-    [[self alloc] requestWithUrl:url withDic:parameters requestType:RequestTypeDelete
+    [[self alloc] requestWithUrl:url withDic:parameters requestType:RequestTypeDelete sessionManager:nil
+     
+                         success:^(NSDictionary *requestDic) {
+                             success(requestDic);
+                             
+                         } failure:^(NSError *errorInfo) {
+                             failure(errorInfo);
+                         }];
+}
+
+
++ (void)deleteUrl:(NSString *)url parametersDic:(NSDictionary *)parameters sessionManager:(UrlSessionManager *)sessionManager success:(SuccessBlock)success failure:(FailureBlock)failure {
+    
+    [[self alloc] requestWithUrl:url withDic:parameters requestType:RequestTypeDelete sessionManager:sessionManager
      
                          success:^(NSDictionary *requestDic) {
                              success(requestDic);
@@ -95,58 +144,60 @@ static NSString *BaseUrl = nil;
 
 + (void)downLoadUrl:(NSString *)url parametersDic:(NSDictionary *)parameters downLoadProgress:(loadProgress)progress success:(void (^)(NSURL *filePath, NSURLResponse *response))success failure:(FailureBlock)failure {
     
-    NSString *urlWithoutQuery = [[self alloc] prepareUrlWithoutQueryRequestWithUrlStr:url];
-    
-    NSString *fullUrl = [[self alloc] generateUrlWithUrlStr:urlWithoutQuery withDic:parameters];
-    
-    NSURL *requestUrl = [NSURL URLWithString:fullUrl];
-    
-    NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
-    
-    NSURLSessionDownloadTask *downloadTask = [[UrlSessionManager sharedManager] downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
-        
-        if (progress) {
-            progress(downloadProgress.completedUnitCount, downloadProgress.totalUnitCount);
-        }
-        
-    } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
-
-        NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-        return [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
-        
-    } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
-        
-        [[self alloc] stopActivityIndicator];
-        
-        if (error) {
-            if (failure) {
-                DLogInfo(@"下载错误: %@", error.userInfo);
-                failure(error);
-            }
-        } else {
-            if (success) {
-                success(filePath, response);
-            }
-        }
-        
-    }];
-    
-    [downloadTask resume];
-}
-
-
-+ (void)postImagesData:(NSMutableArray *)imagesData uploadUrl:(NSString *)url name:(NSString *)name parametersDic:(NSDictionary *)parameters uploadProgress:(loadProgress)progress success:(SuccessBlock)success failure:(FailureBlock)failure {
-    
-    [[self alloc] uploadMutipleWithUrl:url fileDatas:imagesData filePaths:nil name:name mimeType:@"image/jpeg" suffix:@"jpg" parametersDic:parameters uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
+    [[self alloc] downLoadUrl:url parametersDic:parameters sessionManager:nil downLoadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
         
         if (progress) {
             progress(bytesRead, totalBytesRead);
         }
         
-    } success:^(NSDictionary *requestObj) {
+    } success:^(NSURL *filePath, NSURLResponse *response) {
         
         if (success) {
-            success(requestObj);
+            success(filePath, response);
+        }
+    } failure:^(NSError *errorInfo) {
+        
+        if (failure) {
+            failure(errorInfo);
+        }
+    }];
+}
+
+
++ (void)downLoadUrl:(NSString *)url parametersDic:(NSDictionary *)parameters sessionManager:(UrlSessionManager *)sessionManager downLoadProgress:(loadProgress)progress success:(void (^)(NSURL *filePath, NSURLResponse *response))success failure:(FailureBlock)failure {
+    
+    [[self alloc] downLoadUrl:url parametersDic:parameters sessionManager:sessionManager downLoadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
+        
+        if (progress) {
+            progress(bytesRead, totalBytesRead);
+        }
+        
+    } success:^(NSURL *filePath, NSURLResponse *response) {
+       
+        if (success) {
+            success(filePath, response);
+        }
+    } failure:^(NSError *errorInfo) {
+        
+        if (failure) {
+            failure(errorInfo);
+        }
+    }];
+}
+
+
++ (void)postImagesData:(NSMutableArray *)imagesData uploadUrl:(NSString *)url name:(NSString *)name parametersDic:(NSDictionary *)parameters uploadProgress:(loadProgress)progress success:(SuccessBlock)success failure:(FailureBlock)failure {
+    
+    [[self alloc] uploadMutipleWithUrl:url fileDatas:imagesData filePaths:nil name:name mimeType:@"image/jpeg" suffix:@"jpg" parametersDic:parameters sessionManager:nil uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
+        
+        if (progress) {
+            progress(bytesRead, totalBytesRead);
+        }
+        
+    } success:^(NSDictionary *requestDic) {
+        
+        if (success) {
+            success(requestDic);
         }
         
     } failure:^(NSError *errorInfo) {
@@ -154,7 +205,29 @@ static NSString *BaseUrl = nil;
         if (failure) {
             failure(errorInfo);
         }
+    }];
+}
+
+
++ (void)postImagesData:(NSMutableArray *)imagesData uploadUrl:(NSString *)url name:(NSString *)name parametersDic:(NSDictionary *)parameters sessionManager:(UrlSessionManager *)sessionManager uploadProgress:(loadProgress)progress success:(SuccessBlock)success failure:(FailureBlock)failure {
+    
+    [[self alloc] uploadMutipleWithUrl:url fileDatas:imagesData filePaths:nil name:name mimeType:@"image/jpeg" suffix:@"jpg" parametersDic:parameters sessionManager:sessionManager uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
         
+        if (progress) {
+            progress(bytesRead, totalBytesRead);
+        }
+        
+    } success:^(NSDictionary *requestDic) {
+        
+        if (success) {
+            success(requestDic);
+        }
+        
+    } failure:^(NSError *errorInfo) {
+        
+        if (failure) {
+            failure(errorInfo);
+        }
     }];
 }
 
@@ -165,16 +238,16 @@ static NSString *BaseUrl = nil;
         suffix = @"";
     }
     
-    [[self alloc] uploadMutipleWithUrl:url fileDatas:imagesData filePaths:nil name:name mimeType:@"application/octet-stream" suffix:suffix parametersDic:parametersDic uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
+    [[self alloc] uploadMutipleWithUrl:url fileDatas:imagesData filePaths:nil name:name mimeType:@"application/octet-stream" suffix:suffix parametersDic:parametersDic sessionManager:nil uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
         
         if (progress) {
             progress(bytesRead, totalBytesRead);
         }
         
-    } success:^(NSDictionary *requestObj) {
+    } success:^(NSDictionary *requestDic) {
         
         if (success) {
-            success(requestObj);
+            success(requestDic);
         }
         
     } failure:^(NSError *errorInfo) {
@@ -182,7 +255,33 @@ static NSString *BaseUrl = nil;
         if (failure) {
             failure(errorInfo);
         }
+    }];
+}
+
+
++ (void)postFilesData:(NSMutableArray *)imagesData uploadUrl:(NSString *)url name:(NSString *)name suffix:(NSString *)suffix parametersDic:(NSDictionary *)parametersDic sessionManager:(UrlSessionManager *)sessionManager uploadProgress:(loadProgress)progress success:(SuccessBlock)success failure:(FailureBlock)failure {
+    
+    if(suffix == nil) {
+        suffix = @"";
+    }
+    
+    [[self alloc] uploadMutipleWithUrl:url fileDatas:imagesData filePaths:nil name:name mimeType:@"application/octet-stream" suffix:suffix parametersDic:parametersDic sessionManager:sessionManager uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
         
+        if (progress) {
+            progress(bytesRead, totalBytesRead);
+        }
+        
+    } success:^(NSDictionary *requestDic) {
+        
+        if (success) {
+            success(requestDic);
+        }
+        
+    } failure:^(NSError *errorInfo) {
+        
+        if (failure) {
+            failure(errorInfo);
+        }
     }];
 }
 
@@ -197,16 +296,16 @@ static NSString *BaseUrl = nil;
         mimeType = @"audio/ogg";
     }
     
-    [[self alloc] uploadMutipleWithUrl:url fileDatas:VoicesData filePaths:nil name:name mimeType:mimeType suffix:suffix parametersDic:parametersDic uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
+    [[self alloc] uploadMutipleWithUrl:url fileDatas:VoicesData filePaths:nil name:name mimeType:mimeType suffix:suffix parametersDic:parametersDic sessionManager:nil uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
         
         if (progress) {
             progress(bytesRead, totalBytesRead);
         }
         
-    } success:^(NSDictionary *requestObj) {
+    } success:^(NSDictionary *requestDic) {
         
         if (success) {
-            success(requestObj);
+            success(requestDic);
         }
         
     } failure:^(NSError *errorInfo) {
@@ -214,7 +313,37 @@ static NSString *BaseUrl = nil;
         if (failure) {
             failure(errorInfo);
         }
+    }];
+}
+
+
++ (void)postVoiceData:(NSMutableArray *)VoicesData uploadUrl:(NSString *)url name:(NSString *)name mimeType:(NSString *)mimeType suffix:(NSString *)suffix parametersDic:(NSDictionary *)parametersDic sessionManager:(UrlSessionManager *)sessionManager uploadProgress:(loadProgress)progress success:(SuccessBlock)success failure:(FailureBlock)failure {
+    
+    if (suffix == nil || [suffix stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0) {
+        suffix = @"spx";
+    }
+    
+    if (mimeType == nil || [mimeType stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0) {
+        mimeType = @"audio/ogg";
+    }
+    
+    [[self alloc] uploadMutipleWithUrl:url fileDatas:VoicesData filePaths:nil name:name mimeType:mimeType suffix:suffix parametersDic:parametersDic sessionManager:sessionManager uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
         
+        if (progress) {
+            progress(bytesRead, totalBytesRead);
+        }
+        
+    } success:^(NSDictionary *requestDic) {
+        
+        if (success) {
+            success(requestDic);
+        }
+        
+    } failure:^(NSError *errorInfo) {
+        
+        if (failure) {
+            failure(errorInfo);
+        }
     }];
 }
 
@@ -225,16 +354,16 @@ static NSString *BaseUrl = nil;
         suffix = @"";
     }
     
-    [[self alloc] uploadMutipleWithUrl:url fileDatas:nil filePaths:filePaths name:name mimeType:@"application/octet-stream" suffix:suffix parametersDic:parameters uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
+    [[self alloc] uploadMutipleWithUrl:url fileDatas:nil filePaths:filePaths name:name mimeType:@"application/octet-stream" suffix:suffix parametersDic:parameters sessionManager:nil uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
         
         if (progress) {
             progress(bytesRead, totalBytesRead);
         }
         
-    } success:^(NSDictionary *requestObj) {
+    } success:^(NSDictionary *requestDic) {
         
         if (success) {
-            success(requestObj);
+            success(requestDic);
         }
         
     } failure:^(NSError *errorInfo) {
@@ -242,12 +371,44 @@ static NSString *BaseUrl = nil;
         if (failure) {
             failure(errorInfo);
         }
-        
     }];
 }
 
 
-- (void)uploadMutipleWithUrl:(NSString *)url fileDatas:(NSMutableArray *)fileDatas filePaths:(NSMutableArray *)filePaths name:(NSString *)name mimeType:(NSString *)type suffix:(NSString *)suffix parametersDic:(NSDictionary *)parametersDic uploadProgress:(loadProgress)progress success:(SuccessBlock)success failure:(FailureBlock)failure {
++ (void)postWithFilesPaths:(NSMutableArray *)filePaths uploadUrl:(NSString *)url name:(NSString *)name suffix:(NSString *)suffix parametersDic:(NSDictionary *)parameters sessionManager:(UrlSessionManager *)sessionManager uploadProgress:(loadProgress)progress success:(SuccessBlock)success failure:(FailureBlock)failure {
+    
+    if (suffix == nil) {
+        suffix = @"";
+    }
+    
+    [[self alloc] uploadMutipleWithUrl:url fileDatas:nil filePaths:filePaths name:name mimeType:@"application/octet-stream" suffix:suffix parametersDic:parameters sessionManager:sessionManager uploadProgress:^(int64_t bytesRead, int64_t totalBytesRead) {
+        
+        if (progress) {
+            progress(bytesRead, totalBytesRead);
+        }
+        
+    } success:^(NSDictionary *requestDic) {
+        
+        if (success) {
+            success(requestDic);
+        }
+        
+    } failure:^(NSError *errorInfo) {
+        
+        if (failure) {
+            failure(errorInfo);
+        }
+    }];
+}
+
+
+- (void)uploadMutipleWithUrl:(NSString *)url fileDatas:(NSMutableArray *)fileDatas filePaths:(NSMutableArray *)filePaths name:(NSString *)name mimeType:(NSString *)type suffix:(NSString *)suffix parametersDic:(NSDictionary *)parametersDic sessionManager:(UrlSessionManager *)sessionManager uploadProgress:(loadProgress)progress success:(SuccessBlock)success failure:(FailureBlock)failure {
+    
+    if (!url) {
+        
+        DLogInfo(@"url为空");
+        return;
+    }
     
     if (filePaths != nil && fileDatas == nil) {
         
@@ -258,11 +419,16 @@ static NSString *BaseUrl = nil;
         }
     }
     
+    UrlSessionManager *manager = [UrlSessionManager sharedManager];
+    if (sessionManager != nil && [sessionManager isKindOfClass:[UrlSessionManager class]]) {
+        manager = sessionManager;
+    }
+    
     if (fileDatas && fileDatas.count > 0) {
         
         NSString *urlWithoutQuery = [self prepareUrlWithoutQueryRequestWithUrlStr:url];
 
-        NSURLSessionDataTask *tast = [[UrlSessionManager sharedManager] POST:urlWithoutQuery parameters:parametersDic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        [manager POST:urlWithoutQuery parameters:parametersDic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
             
             NSString *mimeType = type;
             if (mimeType == nil || [mimeType stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0) {
@@ -312,13 +478,11 @@ static NSString *BaseUrl = nil;
                 DLogInfo(@"上传多个文件错误： %@", error);
             }
         }];
-        
-        [tast resume];
     }
 }
 
 
-- (void)requestWithUrl:(NSString *)url withDic:(NSDictionary *)parameters requestType:(RequestType)requestType success:(SuccessBlock)success failure:(FailureBlock)failure {
+- (void)requestWithUrl:(NSString *)url withDic:(NSDictionary *)parameters requestType:(RequestType)requestType sessionManager:(UrlSessionManager *)sessionManager success:(SuccessBlock)success failure:(FailureBlock)failure {
     
     if (!url) {
         
@@ -326,12 +490,16 @@ static NSString *BaseUrl = nil;
         return;
     }
     
-    
+    UrlSessionManager *manager = [UrlSessionManager sharedManager];
+    if (sessionManager != nil && [sessionManager isKindOfClass:[UrlSessionManager class]]) {
+        manager = sessionManager;
+    }
+
     NSString *urlWithoutQuery = [self prepareUrlWithoutQueryRequestWithUrlStr:url];
         
     if (requestType == RequestTypeGet) {
         
-        [[UrlSessionManager sharedManager] GET:urlWithoutQuery parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
+        [manager GET:urlWithoutQuery parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
@@ -356,7 +524,7 @@ static NSString *BaseUrl = nil;
         
     } else if (requestType == RequestTypePost) {
         
-        [[UrlSessionManager sharedManager] POST:urlWithoutQuery parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
+        [manager POST:urlWithoutQuery parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
@@ -381,7 +549,7 @@ static NSString *BaseUrl = nil;
         
     } else if (requestType == RequestTypePut) {
         
-        [[UrlSessionManager sharedManager] PUT:urlWithoutQuery parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager PUT:urlWithoutQuery parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
           
             [self stopActivityIndicator];
 
@@ -404,7 +572,7 @@ static NSString *BaseUrl = nil;
         
     } else if (requestType == RequestTypeDelete) {
         
-        [[UrlSessionManager sharedManager] DELETE:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager DELETE:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
             [self stopActivityIndicator];
             
@@ -426,6 +594,60 @@ static NSString *BaseUrl = nil;
 
         }];
     }
+}
+
+
+- (void)downLoadUrl:(NSString *)url parametersDic:(NSDictionary *)parameters sessionManager:(UrlSessionManager *)sessionManager downLoadProgress:(loadProgress)progress success:(void (^)(NSURL *filePath, NSURLResponse *response))success failure:(FailureBlock)failure {
+    
+    if (!url) {
+        
+        DLogInfo(@"url为空");
+        return;
+    }
+    
+    NSString *urlWithoutQuery = [self prepareUrlWithoutQueryRequestWithUrlStr:url];
+    
+    NSString *fullUrl = [self generateUrlWithUrlStr:urlWithoutQuery withDic:parameters];
+    
+    NSURL *requestUrl = [NSURL URLWithString:fullUrl];
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
+    
+    UrlSessionManager *manager = [UrlSessionManager sharedManager];
+    
+    if (sessionManager != nil && [sessionManager isKindOfClass:[UrlSessionManager class]]) {
+        manager = sessionManager;
+    }
+    
+    NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+        if (progress) {
+            progress(downloadProgress.completedUnitCount, downloadProgress.totalUnitCount);
+        }
+        
+    } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
+        
+        NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+        return [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+        
+    } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
+        
+        [self stopActivityIndicator];
+        
+        if (error) {
+            if (failure) {
+                DLogInfo(@"下载错误: %@", error.userInfo);
+                failure(error);
+            }
+        } else {
+            if (success) {
+                success(filePath, response);
+            }
+        }
+        
+    }];
+    
+    [downloadTask resume];
 }
 
 
@@ -508,6 +730,7 @@ static NSString *BaseUrl = nil;
 
 //拼接参数为url
 - (NSString *)generateUrlWithUrlStr:(NSString *)urlStr withDic:(NSDictionary *)parametersDic {
+    
     if (!parametersDic || parametersDic.count <= 0) {
         return urlStr;
     }

@@ -110,10 +110,10 @@
 		CD0173DD1CA901AD0037106B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		CD0173DF1CA901B40037106B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		CD0173E11CA901BD0037106B /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		CD0173E31CA901F90037106B /* Http.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Http.h; sourceTree = "<group>"; };
-		CD0173E41CA901F90037106B /* Http.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Http.m; sourceTree = "<group>"; };
-		CD05DFF21CB4F39F007A49B6 /* UrlSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlSessionManager.h; sourceTree = "<group>"; };
-		CD05DFF31CB4F39F007A49B6 /* UrlSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlSessionManager.m; sourceTree = "<group>"; };
+		CD0173E31CA901F90037106B /* Http.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Http.h; path = ../Http.h; sourceTree = "<group>"; };
+		CD0173E41CA901F90037106B /* Http.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Http.m; path = ../Http.m; sourceTree = "<group>"; };
+		CD05DFF21CB4F39F007A49B6 /* UrlSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UrlSessionManager.h; path = ../UrlSessionManager.h; sourceTree = "<group>"; };
+		CD05DFF31CB4F39F007A49B6 /* UrlSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UrlSessionManager.m; path = ../UrlSessionManager.m; sourceTree = "<group>"; };
 		CDAED8431CABCA990058F41A /* 58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 58.png; path = "../AFNetworking/UIKit+AFNetworking/58.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -185,10 +185,7 @@
 				CD0173841CA901190037106B /* LaunchScreen.storyboard */,
 				CD0173871CA901190037106B /* Info.plist */,
 				CD0173761CA901190037106B /* Supporting Files */,
-				CD0173E31CA901F90037106B /* Http.h */,
-				CD0173E41CA901F90037106B /* Http.m */,
-				CD05DFF21CB4F39F007A49B6 /* UrlSessionManager.h */,
-				CD05DFF31CB4F39F007A49B6 /* UrlSessionManager.m */,
+				CD8C16151CE46420009E5AD8 /* HttpUtils */,
 			);
 			path = NetWorking;
 			sourceTree = "<group>";
@@ -265,6 +262,17 @@
 			);
 			name = "UIKit+AFNetworking";
 			path = "AFNetworking/UIKit+AFNetworking";
+			sourceTree = "<group>";
+		};
+		CD8C16151CE46420009E5AD8 /* HttpUtils */ = {
+			isa = PBXGroup;
+			children = (
+				CD0173E31CA901F90037106B /* Http.h */,
+				CD0173E41CA901F90037106B /* Http.m */,
+				CD05DFF21CB4F39F007A49B6 /* UrlSessionManager.h */,
+				CD05DFF31CB4F39F007A49B6 /* UrlSessionManager.m */,
+			);
+			path = HttpUtils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
